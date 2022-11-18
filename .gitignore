@@ -3,6 +3,7 @@ reference/
 media/
 .ipynb_checkpoints/
 **/__pycache__
+**/migrations/
 
 # Files
 **/*.sqlite3

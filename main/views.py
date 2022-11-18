@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.utils import timezone
+from .models import ReviewImage
 from .forms import ReviewForm
 
 # Create your views here.
@@ -16,9 +17,12 @@ def review_create(request):
         
         if form.is_valid():
             review = form.save(commit=False)
-            review.image = request.FILES.get('image')
             review.create_date = timezone.now()
             review.save()
+
+            for image in request.FILES.getlist('image'):
+                review_image = ReviewImage(review_id=review, image=image, upload_date=timezone.now())
+                review_image.save()
 
         return render(request, 'main/review_create.html')
     else:
