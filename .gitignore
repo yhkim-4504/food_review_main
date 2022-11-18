@@ -1,3 +1,10 @@
-*.sqlite3
-**/__pycache__
+# Folder
 reference/
+media/
+.ipynb_checkpoints/
+**/__pycache__
+
+# Files
+**/*.sqlite3
+**/*.pk
+**/*.ipynb
