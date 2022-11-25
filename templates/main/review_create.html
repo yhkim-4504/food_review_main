@@ -3,7 +3,7 @@
 <h2>리뷰작성</h2>
 <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    <textarea name="content" id="content"></textarea><br>
+    <textarea name="content" id="content" placeholder="내용을 입력해주세요."></textarea><br>
     <input type="file" name="image" id="image" accept="image/jpeg, image/png" multiple><br>
     <input type="submit" value="작성하기">
 </form>
