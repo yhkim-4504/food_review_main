@@ -3,7 +3,9 @@ from django import db
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.utils import timezone
-from .models import ReviewImage
+from django.core.paginator import Paginator
+from django.views.decorators.csrf import csrf_exempt
+from .models import ReviewImage, Review
 from .forms import ReviewForm
 from grpc_ai_client.ai_client import GrpcClient
 
@@ -14,6 +16,7 @@ def main_page(request):
 def menu_page(request):
     return render(request, 'main/menu.html')
 
+@csrf_exempt
 def review_create(request):
     if request.method == 'POST':
         form = ReviewForm(request.POST)
@@ -41,6 +44,30 @@ def review_create(request):
         }
 
         return render(request, 'main/review_create.html', context)
+    
+def review_display(request):
+    objects = Review.objects.order_by('-create_date')
+    per_page = 10
+
+    # Paginator
+    paginator = Paginator(objects, per_page=per_page)
+    page = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page)
+
+    # Page indexes
+    start_page = (page_obj.number//per_page) * 10 + 1
+    prev_start_page = start_page-per_page if start_page-per_page >= 1 else None
+    last_page = min(start_page + per_page - 1, paginator.num_pages)
+    next_start_page = last_page + 1 if last_page + 1 <= paginator.num_pages else None
+
+    context = {
+        'review_list': page_obj,
+        'page_range': range(start_page, last_page+1),
+        'prev_start_page': prev_start_page,
+        'next_start_page': next_start_page,
+    }                   
+
+    return render(request, 'main/review_display.html', context)
 
 def inference_thread_func(review, host, port, id, image_bytes):
     result = GrpcClient.inference_request(host, port, id, image_bytes)

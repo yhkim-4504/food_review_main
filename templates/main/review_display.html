@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>리뷰보기</h2>
+{% for review in review_list %}
+<p>{{ review.content }}</p>
+{% for review_image in review.reviewimage_set.all %}
+<img src="{{ review_image.image.url }}">
+{% endfor %}
+<hr>
+{% endfor %}
+
+<h3>페이지네이션</h3>
+<ul>
+    {% if prev_start_page %}
+    <li><a href="{% url 'main:review_display' %}?page={{ prev_start_page }}">앞</a></li>
+    {% else %}
+    <li>앞</li>
+    {% endif %}
+
+    {% for idx in page_range %}
+    <li><a href="{% url 'main:review_display' %}?page={{ idx }}">{{ idx }}</a></li>
+    {% endfor %}
+
+    {% if next_start_page %}
+    <li><a href="{% url 'main:review_display' %}?page={{ next_start_page }}">뒤</a></li>
+    {% else %}
+    <li>뒤</li>
+    {% endif %}
+</ul>
+{% endblock %}
