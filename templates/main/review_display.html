@@ -3,6 +3,7 @@
 <h2>리뷰보기</h2>
 {% for review in review_list %}
 <p>{{ review.content }}</p>
+<p>category : {{ review.get_food_type_display }}</p>
 {% for review_image in review.reviewimage_set.all %}
 <img src="{{ review_image.image.url }}">
 {% endfor %}
