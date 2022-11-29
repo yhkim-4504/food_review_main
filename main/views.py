@@ -8,6 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import ReviewImage, Review
 from .forms import ReviewForm
 from grpc_ai_client.ai_client import GrpcClient
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def main_page(request):
@@ -17,6 +18,7 @@ def menu_page(request):
     return render(request, 'main/menu.html')
 
 @csrf_exempt
+@login_required(login_url='common:login')
 def review_create(request):
     if request.method == 'POST':
         form = ReviewForm(request.POST)
