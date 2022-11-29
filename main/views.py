@@ -35,15 +35,10 @@ def review_create(request):
                 if i == 0:
                     t = threading.Thread(target=inference_thread_func, args=(review, 'localhost', '50051', review.id, image_bytes))
                     t.start()
-
-        return render(request, 'main/review_create.html')
     else:
         form = ReviewForm()
-        context = {
-            'form': form
-        }
 
-        return render(request, 'main/review_create.html', context)
+    return render(request, 'main/review_create.html', {'form': form})
     
 def review_display(request):
     objects = Review.objects.order_by('-create_date')

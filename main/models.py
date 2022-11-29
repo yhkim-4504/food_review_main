@@ -6,7 +6,7 @@ IDX_TO_LABEL = {v: k for k, v in LABEL_TO_IDX.items()}
 # Create your models here.
 class Review(models.Model):
     content = models.TextField()
-    food_type = models.CharField(max_length=1, choices=[(k, v) for k, v in IDX_TO_LABEL.items()], default=-1)
+    food_type = models.CharField(max_length=1, choices=[(str(k), v) for k, v in IDX_TO_LABEL.items()], default=-1)
     prob = models.FloatField(default=-1)
     create_date = models.DateTimeField()
 
