@@ -25,6 +25,7 @@ def review_create(request):
         
         if form.is_valid():
             review = form.save(commit=False)
+            review.author = request.user
             review.create_date = timezone.now()
             review.save()
 

@@ -9,6 +9,7 @@ class Review(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
     food_type = models.CharField(max_length=1, choices=[(str(k), v) for k, v in IDX_TO_LABEL.items()], default=-1)
+    rating = models.SmallIntegerField(choices=[(i, i) for i in range(1, 1 + 5)])
     prob = models.FloatField(default=-1)
     create_date = models.DateTimeField()
 

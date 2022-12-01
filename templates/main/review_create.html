@@ -1,9 +1,30 @@
 {% extends 'base.html' %}
 {% block content %}
 <h2>리뷰작성</h2>
+{% if form.errors %}
+<div>
+    {% for field in form %}
+    <!-- 필드 오류 -->
+    {% if field.errors %}
+    <div>
+        <strong>{{ field.label }}</strong>
+        {{ field.errors }}
+    </div>
+    {% endif %}
+    {% endfor %}
+    <!-- 넌필드 오류 -->
+    {% for error in form.non_field_errors %}
+    <div>
+        <strong>{{ error }}</strong>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
 <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <textarea name="content" id="content" placeholder="내용을 입력해주세요."></textarea><br>
+    <label for="rating">별점</label>
+    <input type="number" id="rating" name="rating" min="1" max="5" value="5"><label>점</label><br>
     <input type="file" name="image" id="image" accept="image/jpeg, image/png" multiple><br>
     <input type="submit" value="작성하기">
 </form>
