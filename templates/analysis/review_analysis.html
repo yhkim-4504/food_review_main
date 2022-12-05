@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>리뷰분석</h3>
+{% if form.errors %}
+<div>
+    {% for field in form %}
+    <!-- 필드 오류 -->
+    {% if field.errors %}
+    <div>
+        <strong>{{ field.label }}</strong>
+        {{ field.errors }}
+    </div>
+    {% endif %}
+    {% endfor %}
+    <!-- 넌필드 오류 -->
+    {% for error in form.non_field_errors %}
+    <div>
+        <strong>{{ error }}</strong>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+<!-- 기간설정 - 메뉴별 별점주문수추이분석(line plot) 1주일 - 남녀메뉴별 별점 주문수 분석(bar plot + pie) - 나이대별 메뉴분석(나이대 x축, 메뉴별로 bar y축, 주문수 pieplot) -->
+<form method="post" action="{% url 'analysis:review_analysis' %}">
+    {% csrf_token %}
+    <!-- 기간설정 -->
+    <div>
+        <label for="startdate">시작기간</label>
+        <input type="date" name="startdate" id="startdate" value="{{ form.startdate.value|default_if_none:'' }}">
+    </div>
+    <div>
+        <label for="enddate">종료기간</label>
+        <input type="date" name="enddate" id="enddate" value="{{ form.enddate.value|default_if_none:'' }}">
+    </div>
+    <!-- 분석타입 설정 -->
+    <div>
+        <label>분석타입</label>
+        <input type="radio" id="total" name="analysis_type" value="total" checked>
+        <label for="total">통합분석</label>
+        <input type="radio" id="gender" name="analysis_type" value="gender">
+        <label for="gender">성별분석</label>
+        <input type="radio" id="age" name="analysis_type" value="age">
+        <label for="age">나이별분석</label>
+    </div>
+    <button type="submit">분석하기</button>
+</form>
+{% endblock %}
