@@ -18,9 +18,8 @@ def review_analysis(request):
         
         if form.is_valid():
             # Set range
-            start_date, end_date = request.POST.get('startdate'), request.POST.get('enddate')
-            start_datetime = datetime.datetime.combine(datetime.datetime.strptime(start_date, '%Y-%m-%d'), datetime.time.min)
-            end_datetime = datetime.datetime.combine(datetime.datetime.strptime(end_date, '%Y-%m-%d'), datetime.time.max)
+            start_datetime = datetime.datetime.combine(form.cleaned_data['startdate'], datetime.time.min)
+            end_datetime = datetime.datetime.combine(form.cleaned_data['enddate'], datetime.time.max)
             
             # Query range objects
             review_range_objects = Review.objects.filter(create_date__range=(timezone.make_aware(start_datetime), timezone.make_aware(end_datetime)))
