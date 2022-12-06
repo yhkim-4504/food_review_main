@@ -10,7 +10,7 @@ from .forms import AnalysisForm
 from .serializers import ReviewSerializer
 
 # Create your views here.
-@login_required(login_url='common:login')
+# @login_required(login_url='common:login')
 @api_view(['GET', 'POST'])
 def review_analysis(request):
     if request.method == 'POST':
