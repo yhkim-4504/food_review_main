@@ -1,11 +1,11 @@
 import datetime
 from django.shortcuts import render
 from django.http import HttpResponse
-from main.models import Review
 from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.utils import timezone
+from main.models import Review, IDX_TO_LABEL
 from .forms import AnalysisForm
 from .serializers import ReviewSerializer
 
@@ -23,8 +23,13 @@ def review_analysis(request):
             
             # Query range objects
             review_range_objects = Review.objects.filter(create_date__range=(timezone.make_aware(start_datetime), timezone.make_aware(end_datetime)))
+            data = ReviewSerializer(review_range_objects, many=True).data
+            response_data = {
+                'reviews': data,
+                'idx2label': IDX_TO_LABEL,
+            }
 
-            return Response(ReviewSerializer(review_range_objects, many=True).data)
+            return Response(response_data)
     else:
         form = AnalysisForm()
 
