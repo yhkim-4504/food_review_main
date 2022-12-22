@@ -131,6 +131,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
+    BASE_DIR / STATIC_URL,
     BASE_DIR / 'bootstrap_5.2.2/css',
     BASE_DIR / 'bootstrap_5.2.2/js'
 ]
