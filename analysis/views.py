@@ -27,9 +27,18 @@ def review_analysis(request):
             response_data = {
                 'reviews': data,
                 'idx2label': IDX_TO_LABEL,
+                'form_error': False
             }
 
             return Response(response_data)
+        else:
+            error_list = {
+                'field': {field.label: field.errors for field in form if field.errors},
+                'non_field': form.non_field_errors(),
+                'form_error': True
+            }
+
+            return Response(error_list)
     else:
         form = AnalysisForm()
 
