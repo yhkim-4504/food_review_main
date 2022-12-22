@@ -1,27 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
 <h3>리뷰분석</h3>
-{% if form.errors %}
-<div>
-    {% for field in form %}
-    <!-- 필드 오류 -->
-    {% if field.errors %}
-    <div>
-        <strong>{{ field.label }}</strong>
-        {{ field.errors }}
-    </div>
-    {% endif %}
-    {% endfor %}
-    <!-- 넌필드 오류 -->
-    {% for error in form.non_field_errors %}
-    <div>
-        <strong>{{ error }}</strong>
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
+<div id="error"></div>
 <!-- 기간설정 - 메뉴별 별점주문수추이분석(line plot) 1주일 - 남녀메뉴별 별점 주문수 분석(bar plot + pie) - 나이대별 메뉴분석(나이대 x축, 메뉴별로 bar y축, 주문수 pieplot) -->
-<form method="post" action="{% url 'analysis:review_analysis' %}">
+<form method="post" onsubmit="return false;">
     {% csrf_token %}
     <!-- 기간설정 -->
     <div>
@@ -42,6 +24,12 @@
         <input type="radio" id="age" name="analysis_type" value="age">
         <label for="age">나이별분석</label>
     </div>
-    <button type="submit">분석하기</button>
+    <button type="submit" id="submit">분석하기</button>
 </form>
+<h3>차트</h3>
+<canvas id="chart"></canvas>
+{% load static %}
+<script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.js" integrity="sha512-d6nObkPJgV791iTGuBoVC9Aa2iecqzJRE0Jiqvk85BhLHAPhWqkuBiQb1xz2jvuHNqHLYoN3ymPfpiB1o+Zgpw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="{% static 'analysis/chart.js' %}" type="module"></script>
 {% endblock %}
